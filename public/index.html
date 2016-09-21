@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<html>
+<html ng-app="voterApp">
 
 	<head>
-		<title>Clementine.js - The elegant and lightweight full stack JavaScript boilerplate.</title>
+		<title>Voting app</title>
 		
 		<link href="/public/css/main.css" rel="stylesheet" type="text/css">
 	</head>
@@ -22,18 +22,31 @@
 			<p class="clementine-text">Clementine.js</p>
 		</div>
 	
-		<div class="container">
-			<p>You have clicked the button <span id="click-nbr"></span> times.</p>
+		<div class="container" ng-controller="clickController">
+			<p>You have {{pollsCount}} polls.</p>
 			<br />
 			<div class="btn-container">
-				<button type="submit" class="btn btn-add">CLICK ME!</button>
-				<button class="btn btn-delete">RESET</button>
+				<button type="submit" class="btn btn-add"  ng-click="addPoll()">Add new poll</button>
+				<button class="btn btn-delete" ng-click="resetPolls()">RESET</button>
 			</div>
 		</div>
 		
+		<div class="container" ng-controller="pollListController">
+			<p>Your polls.</p>
+			<li ng-repeat="poll in polls">
+				<p>This poll is {{ poll.pollName }}</p>
+			</li>
+			<p>End of polls.</p>
+			
+		</div>
+		
+		
 		<script type="text/javascript" src="common/ajax-functions.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script> 
+		<script type="text/javascript" src="https://code.angularjs.org/1.5.8/angular-resource.min.js"></script> 
 		<script type="text/javascript" src="controllers/clickController.client.js"></script>
 		<script type="text/javascript" src="controllers/userController.client.js"></script>
+		
 	</body>
 
 </html>

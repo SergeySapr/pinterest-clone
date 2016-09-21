@@ -1,6 +1,7 @@
 'use strict';
 
 var Users = require('../models/users.js');
+var Polls = require('../models/polls.js');
 
 function ClickHandler () {
 
@@ -10,13 +11,13 @@ function ClickHandler () {
 			.exec(function (err, result) {
 				if (err) { throw err; }
 
-				res.json(result.nbrClicks);
+				res.json(result.pollsCount);
 			});
 	};
 
 	this.addClick = function (req, res) {
 		Users
-			.findOneAndUpdate({ 'github.id': req.user.github.id }, { $inc: { 'nbrClicks.clicks': 1 } })
+			.findOneAndUpdate({ 'github.id': req.user.github.id }, { $inc: { 'pollsCount': 1 } })
 			.exec(function (err, result) {
 					if (err) { throw err; }
 
@@ -27,11 +28,20 @@ function ClickHandler () {
 
 	this.resetClicks = function (req, res) {
 		Users
-			.findOneAndUpdate({ 'github.id': req.user.github.id }, { 'nbrClicks.clicks': 0 })
+			.findOneAndUpdate({ 'github.id': req.user.github.id }, { 'pollsCount': 0 })
 			.exec(function (err, result) {
 					if (err) { throw err; }
 
 					res.json(result.nbrClicks);
+				}
+			);
+	};
+	this.getPolls = function (req, res) {
+		Polls
+			.find({ 'authorId': req.user.github.id })
+			.exec(function (err, result) {
+					if (err) { throw err; }
+					res.send(result);
 				}
 			);
 	};

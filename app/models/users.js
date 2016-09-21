@@ -5,14 +5,12 @@ var Schema = mongoose.Schema;
 
 var User = new Schema({
 	github: {
-		id: String,
+		id: {type: String, index: true},
 		displayName: String,
 		username: String,
-      publicRepos: Number
+        publicRepos: Number
 	},
-   nbrClicks: {
-      clicks: Number
-   }
+    pollsCount: Number
 });
 
 module.exports = mongoose.model('User', User);

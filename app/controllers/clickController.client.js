@@ -1,33 +1,34 @@
 'use strict';
 
 (function () {
-
-   var addButton = document.querySelector('.btn-add');
-   var deleteButton = document.querySelector('.btn-delete');
-   var clickNbr = document.querySelector('#click-nbr');
-   var apiUrl = appUrl + '/api/:id/clicks';
-
-   function updateClickCount (data) {
-      var clicksObject = JSON.parse(data);
-      clickNbr.innerHTML = clicksObject.clicks;
-   }
-
-   ajaxFunctions.ready(ajaxFunctions.ajaxRequest('GET', apiUrl, updateClickCount));
-
-   addButton.addEventListener('click', function () {
-
-      ajaxFunctions.ajaxRequest('POST', apiUrl, function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateClickCount);
-      });
-
-   }, false);
-
-   deleteButton.addEventListener('click', function () {
-
-      ajaxFunctions.ajaxRequest('DELETE', apiUrl, function () {
-         ajaxFunctions.ajaxRequest('GET', apiUrl, updateClickCount);
-      });
-
-   }, false);
+var apiUrl = appUrl + '/api/:id/clicks';
+ angular
+   .module('voterApp', [])
+   .controller('clickController', ['$scope','$http', function ($scope,$http) {
+         console.log("about to launch get click");
+         $scope.getClicks = function () {
+               $http.get(apiUrl).then(function(response){
+                  console.log("results:",response);
+                  $scope.pollsCount = response.data;
+               })
+            }
+         $scope.getClicks();
+         $scope.addPoll = function () {
+               $http.post(apiUrl).then($scope.getClicks())
+         };
+         $scope.resetPolls = function () {
+               $http.delete(apiUrl).then($scope.getClicks())
+         };
+   }])
+      .controller('pollListController', ['$scope', '$http', function ($scope,$http) {
+         $scope.getPolls = function () {
+               $http.get("/api/:id/polls").then(function(response) {
+                  $scope.polls = response.data
+               })
+         };
+         $scope.getPolls();
+         
+      //$scope.polls = [{id:"20",pollName: 'TestPoll 1'},{id:"15",pollName: 'TestPoll 2'}]
+   }]);
 
 })();
