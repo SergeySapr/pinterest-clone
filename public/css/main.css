@@ -21,6 +21,7 @@ body {
 	font-size: 16px;
 	margin: 0;
 	padding: 0;
+	background-color: rgb(57, 184, 186)!important; 
 }
 
 header {
@@ -34,11 +35,22 @@ p {
 	margin: 8px 0 0 0;
 }
 
-.container p {
+.container{
 	text-align: center;
 	padding: 0;
 }
-
+.options-box {
+	width: 400px;
+	border-style: none;
+	border-width: 1px;
+	border-color: black;
+	margin: 0 auto;
+	text-align: left;
+}
+.option {
+	margin: 10px;
+	border-style: none;
+}
 /****** Header Styling ******/
 
 header p {
@@ -88,7 +100,6 @@ header a ~ p {
 }
 
 .btn p {
-	margin: 8px 0 0 0;
 	padding: 0;
 }
 
@@ -111,7 +122,10 @@ img {
 	font-size: 60px;
 	color: #FFA000;
 }
-
+/*.poll-container {
+	border-style: solid;
+	background-color: rgba(100,200,100,0.5);
+}*/
 /****** Click Styling ******/
 
 .btn-container {	/* Styling for the div that contains the buttons */
@@ -120,18 +134,20 @@ img {
 }
 
 .btn {	/* Styling for buttons */
-	margin: 0 8px;
+	margin: 0 0px;
 	color: white;
-	background-color: #00BCD4;
+	background-color:  #00BCD4;
+	padding: 0 !important;
 	display: inline-block;
 	border: 0;
 	font-size: 14px;
 	border-radius: 3px;
-	padding: 10px 5px;
-	width: 100px;
 	font-weight: 500;
 }
-
+.btn-transparent {
+	color: black;
+	background-color: transparent;/* #00BCD4;*/
+}
 .btn:focus {	/* Remove outline when hovering over button */
 	outline: none;
 }
@@ -201,4 +217,8 @@ span {
 	color: #FFFFFF;
 	display: inline;
 	margin: 0;
+}
+
+.chart-box {
+	margin: 40px auto;
 }
