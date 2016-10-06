@@ -1,0 +1,26 @@
+<div class="container" ng-controller="pollListController">
+	<div ng-show="currentUserID" class="btn-container">
+		<toggle-switch ng-show="currentUserID" ng-model="switchStatus" on-label="My only" off-label="All polls"></toggle-switch>
+	</div>
+	<div class="btn-container">
+		<button ng-show="currentUserID" type="submit" class="btn btn-transparent" ui-sref="newpoll"><i class="fa fa-plus fa-2x"></i></button>
+	</div>
+
+	<uib-accordion>
+		<div uib-accordion-group class="panel-default" ng-repeat="poll in polls | filter: (switchStatus|| '') && currentUserID" heading="{{poll.pollName}}">
+			<div class="btn-container">
+				<button ng-show="poll.userId == currentUserID" class="btn btn-transparent btn-sm" ui-sref="editpoll({pollid: poll._id})"><i class="fa fa-edit fa-2x"></i></button>
+				<button ng-show="poll.userId == currentUserID" class="btn btn-transparent btn-sm" ng-click="deletePoll(poll._id)"><i class="fa fa-remove fa-2x"></i></button>
+			</div>
+			<h3>{{poll.pollQuestion}}</h3>
+			<div ng-repeat="option in poll.options">
+				{{option.optionName}} - {{option.voteCount}} <button ng-click="vote(poll._id, option._id, poll.index, $index)" class="btn btn-transparent"><i class="fa fa-thumbs-up "></i></button>
+			</div>
+			<label><input ng-model="poll.newOption" type="text" placeholder="Own option"></input></label> <button ng-click="addOptionWithVote(poll._id, poll.index,poll.newOption)" class="btn btn-transparent"><i class="fa fa-thumbs-up "></i></button>
+			<br/>
+			<div><i>{{poll.voteCount}} votes given so far</i></div>
+			<canvas class="chart chart-pie " chart-options="options" chart-data="poll.data" chart-labels="poll.labels"></canvas>
+			<!--<span ui-sref="poll({pollid: poll._id})" <b>{{ poll.pollName + '(' + poll.voteCount + ' votes)'}}</b></span><button ng-show="poll.userId == currentUserID" class="btn btn-transparent btn-sm" ui-sref="editpoll({pollid: poll._id})"><i class="fa fa-edit fa-large"></i></button>-->
+		</div uib-accordion-group>
+	</uib-accordion>
+</div>
