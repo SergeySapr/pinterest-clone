@@ -1,14 +1,14 @@
 {
-  "name": "clementinejs-fcc",
-  "version": "1.0.1",
-  "description": "The elegant and lightweight boilerplate for full stack JavaScript.",
+  "name": "voter-app",
+  "version": "1.1.0",
+  "description": "Voting app allowing users to add their own polls",
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/johnstonbl01/clementinejs-fcc"
+    "url": "git+https://github.com/SergeySapr/vote"
   },
-  "homepage": "http://www.clementinejs.com/",
-  "bugs": "https://github.com/johnstonbl01/clementinejs-fcc/issues",
+  "homepage": "",
+  "bugs": "https://github.com/SergeySapr/vote/issues",
   "keywords": [
     "MongoDB",
     "Mongoose",
@@ -16,12 +16,13 @@
     "Express",
     "Node",
     "javascript",
-    "boilerplate"
+    "Angular",
+    "Freecodecamp"
   ],
   "scripts": {
     "start": "node server.js"
   },
-  "author": "Blake Johnston",
+  "author": "Sergey Saprykin",
   "license": "MIT",
   "dependencies": {
     "angular-animate": "^1.5.8",
