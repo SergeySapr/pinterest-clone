@@ -9,7 +9,7 @@ function PollHandler() {
 		Polls
 		//  
 			.find({
-				'userId': req.user.github.id
+				'userId': req.user.google.id//req.user.github.id
 			}, {
 				'_id': false
 			})
@@ -35,7 +35,7 @@ function PollHandler() {
 		Polls
 		//  
 			.find({
-				'userId': req.user.github.id
+				'userId': req.user.google.id //req.user.github.id
 			}, {
 				'_id': false
 			})
@@ -80,27 +80,35 @@ function PollHandler() {
 				.findById(req.params.pollid, function(err, doc) {
 					if (err) console.error(err);
 					console.log(doc);
-					if (doc.userId == req.user.github.id) doc.remove()
+					if (doc.userId == req.user.google.id) doc.remove()
 					else console.log("trying to remove non-owned doc")
 				});
 		},
 		
 	this.vote = function(req, res) {
 			//console.log("Processing vote query ", req.query)
+			
+
 			Polls
 				.findById(req.query.pollid, function(err, doc) {
 					if (err) console.error(err);
-					console.log("submitted to pollhandler:", doc);
-					for (var i = 0; i < doc.options.length; i++) {
+					console.log("submitted to pollhandler the query ", req.query);
+					
+					if (!req.query.isNewOption) //if voting for existing option, find it and increment its votecount by 1
+						for (var i = 0; i < doc.options.length; i++) {
 						if (doc.options[i]._id == req.query.optionid) {
 							console.log("found option!!!");
 							doc.options[i].voteCount++
 						}
+					} else { //if new option - add this option with votecount 1
+						doc.options.push({"optionName": req.query.optionText,"voteCount":1});
 					}
 					doc.save();
 					res.json(doc);
 				})
-
+		
+			
+			Polls
 			//this simpler option doesn't work for some reason 
 			//	.findOneAndUpdate({ "_id": query.pollid, "options.id":query.optionsid}, { $inc: { "voteCount" : 1 } })
 		}

@@ -129,7 +129,7 @@ img {
 /****** Click Styling ******/
 
 .btn-container {	/* Styling for the div that contains the buttons */
-	margin: -10px auto 0 auto;
+	margin: 20px auto 0 auto;
 	text-align: center;
 }
 
@@ -147,9 +147,13 @@ img {
 .btn-transparent {
 	color: black;
 	background-color: transparent;/* #00BCD4;*/
-}
-.btn:focus {	/* Remove outline when hovering over button */
 	outline: none;
+}
+.btn:hover {	
+	outline: none;
+		transform: scale(1.2, 1.2);
+	-webkit-transform: scale(1.2, 1.2);
+	-moz-transform: scale(1.2, 1.2);
 }
 
 .btn:active {	/* Scale the button down by 10% when clicking on button */
@@ -221,4 +225,22 @@ span {
 
 .chart-box {
 	margin: 40px auto;
+}
+.chart-name {
+	text-align: center;
+	margin-top: 20px;
+}
+.poll-name {
+	
+}
+.poll-question {
+	
+}
+.poll {
+	border-style: solid;
+	border-color: grey;
+	border-width: 0px;
+	background-color: rgba(20,150,100,0.2);
+	margin: 3px auto;
+	width-max: 300px;
 }

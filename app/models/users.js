@@ -10,6 +10,12 @@ var User = new Schema({
 		username: String,
         publicRepos: Number
 	},
+		google: {
+		id: {type: String, index: true},
+		token: String,
+		name: String,
+		email: String
+	},
     pollsCount: Number
 });
 

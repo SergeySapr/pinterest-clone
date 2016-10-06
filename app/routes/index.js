@@ -40,11 +40,13 @@ module.exports = function (app, passport) {
 		.get(function (req, res) {
 			res.sendFile(path + '/public/login.html');
 		});
+		
+
 
 	app.route('/logout')
 		.get(function (req, res) {
 			req.logout();
-			res.redirect('/login');
+			res.redirect('/');
 		});
 
 	app.route('/profile')
@@ -71,7 +73,8 @@ module.exports = function (app, passport) {
 
 	app.route('/api/currentuser')
 		.get(function (req, res) {
-			 if (req.isAuthenticated()) res.json(req.user.github);
+			 if (req.isAuthenticated()) res.json(req.user)
+			 else res.send("Not authenticated");
 		});	
 	app.route('/api/users/:id')
 		.get(function (req, res) {
@@ -89,13 +92,18 @@ module.exports = function (app, passport) {
 		});
 	app.route('/auth/github')
 		.get(passport.authenticate('github'));
-
-	app.route('/auth/github/callback')
-		.get(passport.authenticate('github', {
-			successRedirect: '/',
-			failureRedirect: '/login'
-		}));
-
+	app.route('/auth/google')
+		.get(passport.authenticate('google',{ scope : ['profile', 'email'] }));
+	// app.route('/auth/github/callback')
+	// 	// .get(passport.authenticate('github', {
+	// 	// 	successRedirect: '/',
+	// 	// 	failureRedirect: '/login'
+	// 	// }));
+		app.route('/auth/google/callback')
+            .get(passport.authenticate('google', {
+                    successRedirect : '/',
+                    failureRedirect : '/'
+            }));
 	app.route('/api/:id/clicks')
 		.get(isLoggedIn, clickHandler.getClicks)
 		.post(isLoggedIn, clickHandler.addClick)
