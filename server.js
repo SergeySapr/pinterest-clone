@@ -1,5 +1,5 @@
 'use strict';
-var babel = require("babel-core").transform("code");
+//var babel = require("babel-core").transform("code");
 var express = require('express');
 var routes = require('./app/routes/index.js');
 var mongoose = require('mongoose');
