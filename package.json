@@ -1,6 +1,6 @@
 {
   "name": "pinterest-clone",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "MEAN-stack app built as a Freecodecamp challenge",
   "main": "server.js",
   "repository": {
