@@ -2,78 +2,136 @@
 
 (function() {
     angular
-        .module('voterApp', ['ui.bootstrap', 'toggle-switch', 'ui.router', 'chart.js'])
+        .module('pinterestApp', ['ui.bootstrap', 'wu.masonry', 'ui.router'])
         .config(function($stateProvider, $urlRouterProvider) {
 
-            $urlRouterProvider.otherwise('/polls');
+            $urlRouterProvider.otherwise('/home');
 
             $stateProvider
 
             // HOME STATES AND NESTED VIEWS ========================================
                 .state('home', {
-                    url: '/polls',
-                    templateUrl: 'public/partials/polllist.htm',
-                    controller: 'pollListController'
+                    url: '/home',
+                    templateUrl: 'public/partials/imagewall.htm',
+                    controller: 'imageWallController'
                 })
-                .state('poll', {
-                    url: '/poll/:pollid',
-                    templateUrl: 'public/partials/poll.htm',
-                    controller: 'pollViewController'
+                // .state('poll', {
+                //     url: '/poll/:pollid',
+                //     templateUrl: 'public/partials/poll.htm',
+                //     controller: 'pollViewController'
+                // })
+                .state('userimages', {
+                    url: '/user/:userid',
+                    templateUrl: 'public/partials/oneuserimagewall.htm',
+                    controller: 'userImagesController',
+                                resolve: {
+                PreviousState: [
+                    "$state",
+                    function ($state) {
+                        var currentStateData = {
+                            Name: $state.current.name,
+                            Params: $state.params,
+                            URL: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }
+                ]
+            },
                 })
-                .state('editpoll', {
-                    url: '/editpoll/:pollid',
-                    templateUrl: 'public/partials/editpoll.htm',
-                    controller: 'pollEditController'
+                .state('viewimage', {
+                    url: '/image/:imageid',
+                    templateUrl: 'public/partials/viewimage.htm',
+                    controller: 'imageViewController',
+                                resolve: {
+                PreviousState: [
+                    "$state",
+                    function ($state) {
+                        var currentStateData = {
+                            Name: $state.current.name,
+                            Params: $state.params,
+                            URL: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }
+                ]
+            },
                 })
-                .state('newpoll', {
-                    url: '/editpoll/:pollid',
-                    templateUrl: 'public/partials/editpoll.htm',
-                    controller: 'pollEditController'
+                .state('editimage', {
+                    url: '/editimage/:imageid',
+                    templateUrl: 'public/partials/editimage.htm',
+                    controller: 'imageEditController',
+                                resolve: {
+                PreviousState: [
+                    "$state",
+                    function ($state) {
+                        var currentStateData = {
+                            Name: $state.current.name,
+                            Params: $state.params,
+                            URL: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }
+                ]
+            },
                 })
+                .state('newimage', {
+                    url: '/editimage/:imageid',
+                    templateUrl: 'public/partials/editimage.htm',
+                    controller: 'imageEditController'
+                })
+                // .state('newpoll', {
+                //     url: '/editpoll/:pollid',
+                //     templateUrl: 'public/partials/editpoll.htm',
+                //     controller: 'pollEditController'
+                // })
 
         })
-        .factory('PollService', function($http) {
+        .factory('ImageService', function($http) {
             return {
                 currentUser: undefined,
                 pollCount: 0,
-                getAllPolls: function() {
-                    return $http.get("/api/polls")
+                getAllImages: function() {
+                    return $http.get("/api/images")
                 },
-                getPoll: function(id) {
-                    return $http.get("/api/polls/" + id)
+                getUserImages: function(userid) {
+                    return $http.get("/api/"+userid+"/images")
                 },
-                createPoll: function(poll) {
+                getImage: function(id) {
+                    return $http.get("/api/images/" + id)
+                },
+                createImage: function(image) {
                     return $http({
                         method: 'POST',
-                        url: 'api/polls/new',
-                        data: poll
+                        url: 'api/images/new',
+                        data: image
                     })
                 },
-                savePoll: function(poll) {
-                    $http({
+                saveImage: function(image) {
+                    return $http({
                         method: 'POST',
-                        url: 'api/polls',
-                        data: poll
+                        url: 'api/images',
+                        data: image
                     }).then(function(response) {
                         console.log("posted,", response)
                     })
                 },
-                deletePoll: function(pollID) {
-                    console.log("launched delete from service", pollID)
-                    return $http.delete("api/polls/" + pollID)
+                // savePoll: function(poll) {
+                //     $http({
+                //         method: 'POST',
+                //         url: 'api/polls',
+                //         data: poll
+                //     }).then(function(response) {
+                //         console.log("posted,", response)
+                //     })
+                // },
+                deleteImage: function(imageID) {
+                    console.log("launched delete from service", imageID)
+                    return $http.delete("api/images/" + imageID)
                         // .then(function(response) {
                         //     console.log("deleted,", response)
                         // })
                 },
-                vote: function(pollid, optionid) {
-                    console.log("processed vote in service", pollid, optionid)
-                    return $http.post("/api/vote?isNewOption=false&pollid=" + pollid + "&optionid=" + optionid)
-                },
-                addOptionWithVote: function(pollid, optionText) {
-                    console.log("processed adding option with vote in service", pollid, optionText)
-                    optionText = optionText.replace(" ", "+");
-                    return $http.post("/api/vote?isNewOption=true&pollid=" + pollid + "&optionText=" + optionText)
-                },
+
                 getCurrentUser: function() {
                     return $http.get('/api/currentuser')
                 },
@@ -89,175 +147,80 @@
             return {
                 getCurrentUser: function() {
                     return $http.get('/api/currentuser')
+                },
+                getUserList: function(){
+                    return $http.get('/api/users')
                 }
             }
         })
-        .controller('masterController', function($scope, $http, $state, UserService, PollService) {
+        .controller('masterController', function($scope, $http, $state, $window,UserService, ImageService) {
             //$scope.currentUserID = "mock ID"
             UserService.getCurrentUser().then(function(response) {
-                $scope.currentUserID = response.data.google.id
+                //console.log(response.data.google)
+                $scope.currentUser = {}
+                $scope.currentUser.ID = response.data.google.id
+                $scope.currentUser.displayName = response.data.google.name
             })
-            $scope.pollCount = PollService.pollCount;
-            $scope.deletePoll = function(pollID) {
-                console.log("launched delete from controller,", pollID)
-                PollService.deletePoll(pollID);
-                $state.reload(); //$state.go('home')
+            $scope.deleteImage = function(imageID) {
+                ImageService.deleteImage(imageID)
+            }
+             $scope.goBack = function(){
+                $window.history.back();
             }
         })
-        .controller('pollListController', ['$scope', 'PollService', 'UserService', '$http', function($scope, PollService, UserService, $http) {
-            //get poll data via the service
-            //if (!PollService.currentUser) PollService.initCurrentUser();
-            //$scope.currentUserID = PollService.currentUser
-            // PollService.getCurrentUser().then(function(response){
-            //   $scope.currentUserID = response.data.id
-            // });
+        .controller('imageWallController', ['$scope', 'ImageService', 'UserService', '$http', function($scope, ImageService, UserService, $http) {
+            //get image data via the service
             $scope.refresh = function() {
-                    PollService.getAllPolls().then(function(response) {
-                        $scope.polls = response.data;
-                        $scope.pollsCount = $scope.polls.length;
-                        //PollService.pollCount = $scope.polls.length; //pass to service to be accessible in other controllers
-                        $scope.recalcChartAll();
-                    });
-                } //implement voting
-            $scope.refresh();
-            $scope.recalcChartAll = function() {
-                //calculate the votecount for each poll by summarizing the votecounts for options 
-                $scope.polls.forEach(function(poll, num, array) {
-                    array[num].voteCount = 0;
-                    array[num].index = num;
-                    array[num].labels = [];
-                    array[num].data = [];
-                    array[num].options.forEach(function(option, index, options) {
-                        array[num].voteCount += option.voteCount
-                        array[num].labels.push(option.optionName)
-                        array[num].data.push(option.voteCount)
-                    }, 0)
-                })
-            }
-            $scope.recalcChartOnePoll = function(pollindex) {
-                $scope.polls[pollindex].labels = [];
-                $scope.polls[pollindex].data = [];
-                $scope.polls[pollindex].options.forEach(function(option, index, options) {
-                    $scope.polls[pollindex].labels.push(option.optionName)
-                    $scope.polls[pollindex].data.push(option.voteCount)
-                }, 0)
-            }
-            $scope.vote = function(pollid, optionid, pollindex, optionindex) {
-                console.log("launched vote in controller", pollid, optionid)
-                PollService.vote(pollid, optionid).then(function(response) {
-                    console.log("VOTE CALLBACK")
-                        //manually increment the votecount and redraw the chart to avoid complete screen refresh (which collapses the accordion)
-                        //can implement the full scope refresh from db later on some trigger (eg when the accordion closes)
-                    console.log(response)
-                    $scope.needsUpdate = true;
-                    $scope.polls[pollindex].options[optionindex].voteCount++;
-                    $scope.polls[pollindex].voteCount++;
-                    $scope.recalcChartOnePoll(pollindex);
-                })
-
-            }
-            $scope.addOptionWithVote = function(pollid, pollIndex, optionText) {
-                PollService.addOptionWithVote(pollid, optionText); //add to db
-                $scope.polls[pollIndex].options.push({
-                    "optionName": optionText,
-                    "voteCount": 1
-                }); //add locally, for speed
-                $scope.recalcChartOnePoll(pollIndex);
-
-            }
-            $scope.refreshPoll = function(pollid, index) {
-                PollService.getPoll(pollid).then(function(response) {
-                    var updatedPoll = {};
-                    updatedPoll = response.data;
-                    updatedPoll.labels = [];
-                    updatedPoll.data = [];
-                    updatedPoll.options.forEach(function(option, index) {
-                        updatedPoll.labels.push(option.optionName)
-                        updatedPoll.data.push(option.voteCount)
-                    })
-                    $scope.polls.splice(index, 1, updatedPoll)
-                        //console.log($scope.labels,$scope.data)
+                ImageService.getAllImages().then(function(response) {
+                    $scope.images = response.data;
+                    $scope.imageCount = $scope.images.length;
                 });
             }
+            $scope.refresh();
+
         }])
-        .controller('pollViewController', function($scope, $state, $stateParams, UserService, PollService) {
-            $scope.refresh = function(pollid, index) {
-                PollService.getPoll($stateParams.pollid).then(function(response) {
-                    $scope.poll = response.data;
-                    $scope.labels = [];
-                    $scope.data = [];
-                    $scope.active = true;
-                    $scope.poll.options.forEach(function(option, index) {
-                            $scope.labels.push(option.optionName)
-                            $scope.data.push(option.voteCount)
-                        })
-                        //console.log($scope.labels,$scope.data)
+        .controller('userImagesController', ['$scope', '$stateParams','ImageService', 'UserService', '$http', function($scope, $stateParams,ImageService, UserService, $http) {
+            //get image data via the service
+            $scope.refresh = function() {
+                ImageService.getUserImages($stateParams.userid).then(function(response) {
+                    $scope.images = response.data;
+                    $scope.imageCount = $scope.images.length;
                 });
             }
             $scope.refresh();
 
-            // PollService.getCurrentUser().then(function(response){
-            //   $scope.currentUserID = response.data.id 
-            // });
-            //$scope.currentUser = "mock ID"
-            $scope.vote = function(pollid, optionid) {
-                console.log("launched vote in controller", pollid, optionid)
-                PollService.vote(pollid, optionid).then(function(response) {
-                    console.log("VOTE CALLBACK")
-                    $scope.refresh();
-                })
-
-            }
-            $scope.test = function() {
-                console.log("testing");
-            };
-            $scope.chartOptions = {
-
-            }
-
-        })
-        .controller('pollEditController', function($scope, $state, $stateParams, PollService) {
-            if ($stateParams.pollid) var isNew = false;
+        }])
+        .controller('imageEditController', function($scope, $state, $stateParams, ImageService,PreviousState) {
+            if ($stateParams.imageid) var isNew = false;
             else var isNew = true;
             $scope.refresh = function() {
-                    PollService.getPoll($stateParams.pollid).then(function(response) {
-                        $scope.poll = response.data
-                    });
-                }
-                // PollService.getCurrentUser().then(function(response){
-                //   $scope.currentUserID = response.data.id 
-                // });
-            $scope.savePoll = function() {
+                ImageService.getImage($stateParams.imageid).then(function(response) {
+                    $scope.image = response.data
+                });
+            }
+
+            $scope.saveImage = function() {
                 if (isNew) {
-                    PollService.createPoll($scope.poll).then(function(response) {
+                    ImageService.createImage($scope.image).then(function(response) {
                         console.log("server response:", response)
-                        $stateParams.pollid = response.data.google._id;
+                        $stateParams.imageid = response.data.google._id;
                         $scope.refresh();
                     })
 
                 }
-                else PollService.savePoll($scope.poll)
+                else ImageService.saveImage($scope.image)
+                $state.go('home');
             }
-            $scope.test = function() {
-                console.log("testing");
-                $scope.pollName = "HUrrah!"
-            };
 
-            if (isNew) $scope.poll = {
-                pollName: "",
-                pollQuestion: "",
-                options: [],
+            if (isNew) $scope.image = {
+                imageDesc: '',
+                linkUrl: '',
+                tags: [],
+                likes: 0,
                 userId: $scope.currentUserID
             };
             else $scope.refresh()
 
-
-            $scope.addOption = function() {
-                $scope.poll.options.push({
-                    optionName: "",
-                    voteCount: 0
-                });
-            };
             // $scope.deletePoll= function() {
             //     console.log("launched delete from controller,",$scope.poll)
             //     PollService.deletePoll($scope.poll)
@@ -272,5 +235,75 @@
                 else $scope.poll.options.splice(optId, 1);
             };
         })
+        .controller('imageViewController', function($scope, $state, $stateParams, ImageService,PreviousState) {
+            $scope.refresh = function() {
+                ImageService.getImage($stateParams.imageid).then(function(response) {
+                    $scope.image = response.data
+                });
+            }
+            $scope.refresh();
+        })
+        .directive('editableCollection', function factory($compile) {
+    return {
+        link: function (scope, el, attrs, controller) {
+
+            //parse the element and attributes
+            if (!attrs.expandingOn) {
+                throw 'Expected exanding-on attribute on element: '
+                    + el.html() + '\n but found: '
+                    + JSON.stringify(attrs.$attr) + '\n';
+            }
+
+            var split = attrs.editableCollection.split(' ');
+            var elementName = split[0];
+            var collectionName = split[2];
+
+            if (split.length != 3 || split[1] != 'in') {
+                throw 'Expected editable collection defined as "{element} in {collection}" got: '
+                    + attrs.editableCollection;
+            }
+
+            //Take the elements from this one to move to a child ng-repeat
+            var original = el.contents();
+
+            //Add the ng-repeat for the actual collection
+            var repeater = angular.element('<div/>');
+            repeater.attr('ng-repeat', attrs.editableCollection);
+            repeater.append(original);
+            el.append(repeater);
+
+            //Add the ng-repeat for the overflow
+            var overflowId = 'shouldBeUniquelyGeneratedToAvoidCollisions';
+            console.log('Created overflow with id: '+overflowId+ ' for '+collectionName);
+            scope[overflowId] = [
+                {}
+            ];
+            var overflow = repeater.clone();
+            overflow.attr('ng-repeat',
+                elementName + ' in ' + overflowId);
+            el.append(overflow);
+
+            //Watch the first element and expand the overflow if needed
+            scope.$watch(overflowId+'[0].' + attrs.expandingOn, function (value) {
+                if (value && scope[overflowId].length < 2) {
+                    scope[overflowId].push({});
+                } else if ((!value) && scope[overflowId].length > 1) {
+                    scope[overflowId].pop();
+                }
+            });
+
+            //Watch the second element and push the first in the collection if it changes
+            scope.$watch(overflowId+'[1].' + attrs.expandingOn, function (value) {
+                if (value) {
+                    console.log(collectionName, scope);
+                    scope.$eval(collectionName).push(scope[overflowId].shift());
+                }
+            });
+
+            //compile everything so that Angular can link the new stuff
+            $compile(el.contents())(scope);
+        }
+    };
+});
 
 })();

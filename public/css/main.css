@@ -21,14 +21,14 @@ body {
 	font-size: 16px;
 	margin: 0;
 	padding: 0;
-	background-color: rgb(57, 184, 186)!important; 
+	background-color: rgba(57, 184, 186,0.2)!important; 
 }
 
 header {
-	color: #00BCD4;
-	height: 56px;
+	color: white;
 	margin: 0 0 14px 0;
 	text-align: center;
+	background-color: rgba(57, 184, 186,0.8)!important; 
 }
 
 p {
@@ -151,9 +151,9 @@ img {
 }
 .btn:hover {	
 	outline: none;
-		transform: scale(1.2, 1.2);
-	-webkit-transform: scale(1.2, 1.2);
-	-moz-transform: scale(1.2, 1.2);
+		transform: scale(1.3, 1.3);
+	-webkit-transform: scale(1.3, 1.3);
+	-moz-transform: scale(1.3, 1.3);
 }
 
 .btn:active {	/* Scale the button down by 10% when clicking on button */
@@ -171,50 +171,10 @@ img {
 	font-weight: 400;
 }
 
-/****** Profile Styling ******/
 
-.github-profile {
-	width: 350px;
-	height: 200px;
-	border-radius: 3px;
-	margin: 86px auto 0 auto;
-	background-color: #EEE;
-	text-align: center;
-	color: #000;
-}
-
-.github-profile p:first-child {
-	padding-top: 16px;
-}
-
-.github-profile p:nth-child(5) {
-	margin-bottom: 16px
-}
-
-.github-profile p {
-	margin: 0 0 0 16px;
-	text-align: left;
-}
-
-.profile-value {
-	font-weight: 400;
-}
 
 span {
 	font-weight: 500;
-}
-
-.github-profile > img {
-	padding-top: 16px;
-	margin-bottom: 16px;
-}
-
-.github-profile .menu:hover {
-	color: #FFA000;
-}
-
-.github-profile .menu:active {
-	color: #FF630D;
 }
 
 #menu-divide {
@@ -223,24 +183,16 @@ span {
 	margin: 0;
 }
 
-.chart-box {
-	margin: 40px auto;
+
+.pretty-pic {
+	max-width: 100px;
+	min-width: 50px;
 }
-.chart-name {
-	text-align: center;
-	margin-top: 20px;
+.image-caption {
+	font-style: italic;
+	font-size: smaller;
 }
-.poll-name {
-	
-}
-.poll-question {
-	
-}
-.poll {
-	border-style: solid;
-	border-color: grey;
-	border-width: 0px;
-	background-color: rgba(20,150,100,0.2);
-	margin: 3px auto;
-	width-max: 300px;
+
+.masonry-brick {
+	margin: 10px;
 }

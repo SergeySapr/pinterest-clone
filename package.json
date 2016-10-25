@@ -1,14 +1,14 @@
 {
-  "name": "voter-app",
-  "version": "1.1.0",
-  "description": "Voting app allowing users to add their own polls",
+  "name": "pinterest-clone",
+  "version": "1.0.1",
+  "description": "MEAN-stack app built as a Freecodecamp challenge",
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SergeySapr/vote"
+    "url": "git+https://github.com/SergeySapr/pinterest-clone"
   },
   "homepage": "",
-  "bugs": "https://github.com/SergeySapr/vote/issues",
+  "bugs": "https://github.com/SergeySapr/pinterest-clone/issues",
   "keywords": [
     "MongoDB",
     "Mongoose",
@@ -45,7 +45,8 @@
     "pug": "^2.0.0-beta6"
   },
   "devDependencies": {
-    "babel-core": "^6.16.0"
+    "babel-core": "^6.16.0",
+    "bower": "^1.7.9"
   },
   "engines": {
     "node": "4.5.0"
