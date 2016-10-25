@@ -2,7 +2,7 @@
 
 (function() {
     angular
-        .module('pinterestApp', ['ui.bootstrap', 'wu.masonry', 'ui.router'])
+        .module('pinterestApp', ['ui.bootstrap', 'wu.masonry', 'ui.router','xeditable','ngTagsInput'])
         .config(function($stateProvider, $urlRouterProvider) {
 
             $urlRouterProvider.otherwise('/home');
@@ -198,7 +198,6 @@
                     $scope.image = response.data
                 });
             }
-
             $scope.saveImage = function() {
                 if (isNew) {
                     ImageService.createImage($scope.image).then(function(response) {
@@ -208,7 +207,9 @@
                     })
 
                 }
-                else ImageService.saveImage($scope.image)
+                else 
+                console.log("launching image save, json:",$scope.image)
+                ImageService.saveImage($scope.image)
                 $state.go('home');
             }
 
