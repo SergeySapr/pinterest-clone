@@ -1,0 +1,21 @@
+		<div class="container">
+			<div class="btn-container">
+				<button class="btn btn-transparent btn-sm" ui-sref="home"><i class="fa fa-backward fa-2x"></i></button>
+				<button ng-show="currentUser.ID == image.userId" type="edit" class="btn btn-transparent" ui-sref="editimage({imageid:image._id})"><i class="fa fa-edit fa-2x"></i></button>
+			</div>
+			
+		    <p>{{image.imageDesc}}</p>
+		    <p>Added by {{image.userName}}</p>
+		    <p>Original url: {{image.linkUrl}}</p>
+		    <br/>
+		    <img ng-src="{{ image.linkUrl }}" alt="{{image.imageDesc}}">
+		   	<span ng-repeat="tag in image.tags">{{tag.text}}<span ng-if="!$last"> | </span></span>
+			<br />
+			
+			<!--<p>Edit available options</p>-->
+			<!--<div ng-repeat="option in poll.options">-->
+			<!--	<p ><label>Option:<input type="text" name="optionName" ng-model="option.optionName"></label><b>{{option.voteCount}}</b> <button ng-click="deleteOption($index)" class="btn btn-transparent"><i class="fa fa-remove fa-large"></i></button></p>-->
+			<!--</div>-->
+			<!--<p> <button class="btn btn-add btn-transparent" data-ng-click="addOption()"><i class="fa fa-plus fa-2x"></i></button></p>-->
+			
+		</div>

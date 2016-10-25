@@ -1,0 +1,29 @@
+<div class="container">
+	<div class="btn-container">
+		<button class="btn btn-transparent btn-sm" ng-click="goBack()"><i class="fa fa-backward fa-2x"></i></button>
+		<button ng-click="saveImage()" class="btn btn-transparent btn-sm"><i class="fa fa-save fa-2x"></i></button>
+		<button ng-click="deleteImage(image._id)" class="btn btn-transparent btn-sm"><i class="fa fa-remove fa-2x"></i></button>
+	</div>
+	<br/>
+
+	<p><label>
+		       Description
+		       <input class="form-control" type="text" name="imageDesc" ng-model="image.imageDesc" placeholder="Description"
+		       ng-minlength="3" ng-maxlength="50">
+		    </label></p>
+	<p><label>
+		       Link URL
+		       <input class="form-control" type="text" name="imageLink" ng-model="image.linkUrl" placeholder="Image link"
+		       ng-minlength="3" ng-maxlength="300">
+		    </label></p>
+	<p><label>Tags
+		    <tags-input class="tag-box" ng-model="image.tags" replace-spaces-with-dashes="false"></tags-input>
+</label></p>
+	<img ng-src="{{ image.linkUrl }}" alt="{{image.imageDesc}}">
+	<!--<p>Edit available options</p>-->
+	<!--<div ng-repeat="option in poll.options">-->
+	<!--	<p ><label>Option:<input type="text" name="optionName" ng-model="option.optionName"></label><b>{{option.voteCount}}</b> <button ng-click="deleteOption($index)" class="btn btn-transparent"><i class="fa fa-remove fa-large"></i></button></p>-->
+	<!--</div>-->
+	<!--<p> <button class="btn btn-add btn-transparent" data-ng-click="addOption()"><i class="fa fa-plus fa-2x"></i></button></p>-->
+
+</div>

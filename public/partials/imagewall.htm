@@ -1,0 +1,19 @@
+<div class="container">
+	<div ng-show="currentUser.ID" class="btn-container">
+		<toggle-switch ng-show="currentUser.ID" ng-model="switchStatus" on-label="My only" off-label="All polls"></toggle-switch>
+	</div>
+	<div class="btn-container">
+		<button ng-show="currentUser.ID" type="submit" class="btn btn-transparent" ui-sref="newimage"><i class="fa fa-plus fa-2x"></i></button>
+	</div>
+
+<div masonry>
+    <div class="masonry-brick" ng-repeat="image in images">
+        <a ui-sref="viewimage({imageid:image._id})" ><img class="pretty-pic"  ng-src="{{ image.linkUrl }}" alt="{{image.imageDesc}}" onerror="this.src='/public/img/Broken.png';"></a>
+        <p ng-show="image.userName" class="image-caption">by <a ui-sref="userimages({userid:image.userId})">{{image.userName}}</a></p>
+        <button ng-show="currentUser.ID == image.userId" type="edit" class="btn btn-transparent" ui-sref="editimage({imageid:image._id})"><i class="fa fa-edit"></i></button>
+        <button ng-show="currentUser.ID == image.userId" type="delete" class="btn btn-transparent" ng-click="deleteImage(image._id)"><i class="fa fa-remove"></i></button>
+    </div>
+</div>
+
+
+</div>
